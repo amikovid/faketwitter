@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Home / X</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><path fill=%22white%22 d=%22M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z%22/></svg>" />
+<style>
+  :root {
+    --bg: #000000;
+    --card: #16181C;
+    --card-hover: #080808;
+    --border: #2F3336;
+    --text: #E7E9EA;
+    --text-muted: #71767B;
+    --accent: #1D9BF0;
+    --red: #F91880;
+    --green: #00BA7C;
+    --trump-bg: #0A0800;
+    --bureau-bg: #0A0000;
+    --bureau-border: #CC0000;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; max-width: 600px; margin: 0 auto; border-left: 1px solid var(--border); border-right: 1px solid var(--border); position: relative; padding-bottom: 56px; }
+  a { color: var(--accent); text-decoration: none; }
+
+  /* HEADER */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top {
+    display: grid;
+    grid-template-columns: 56px 1fr 56px;
+    align-items: center;
+    height: 53px;
+    padding: 0 4px;
+  }
+  .back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    margin-left: 8px;
+  }
+  .back-btn:hover { background: rgba(231,233,234,0.1); }
+  .back-btn svg { width: 20px; height: 20px; }
+  .x-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .x-logo svg { width: 30px; height: 30px; fill: var(--text); }
+  .header-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 53px;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+  }
+  .tab:hover { background: rgba(231,233,234,0.03); }
+  .tab.active { color: var(--text); font-weight: 700; }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    width: 56px;
+    background: var(--accent);
+    border-radius: 9999px;
+  }
+
+  /* TWEETS */
+  .feed { display: flex; flex-direction: column; }
+  .tweet {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    padding: 12px 16px 4px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeIn 0.4s ease forwards;
+  }
+  .tweet:hover { background: var(--card-hover); }
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tweet.trump { background: var(--trump-bg); }
+  .tweet.trump:hover { background: #100A00; }
+  .tweet.bureau {
+    background: var(--bureau-bg);
+    border-left: 3px solid var(--bureau-border);
+    padding-left: 13px;
+  }
+  .tweet.bureau:hover { background: #140000; }
+  .tweet.stan-final { padding-top: 16px; padding-bottom: 8px; }
+  .tweet.stan-final .tweet-text { font-size: 22px; line-height: 28px; }
+  .tweet.stan-final .stan-thumb { font-size: 46px; line-height: 1.1; display: inline-block; }
+
+  /* avatar column */
+  .avatar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #333;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 16px;
+    user-select: none;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .avatar.stan { background: #555; }
+  .avatar.bureau {
+    background: #CC0000;
+    color: white;
+    font-size: 22px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(204,0,0,0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(204,0,0,0); }
+  }
+
+  /* reply line connecting parent to child */
+  .reply-line {
+    width: 2px;
+    background: var(--border);
+    flex: 1;
+    margin-top: 4px;
+    min-height: 12px;
+  }
+  .tweet.has-reply-below { padding-bottom: 0; }
+  .tweet.has-reply-below .reply-line { display: block; }
+
+  .tweet.is-reply .avatar-col::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 2px;
+    height: 16px;
+    background: var(--border);
+  }
+
+  /* tweet body */
+  .tweet-body { min-width: 0; padding-left: 4px; }
+  .tweet-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 20px;
+    margin-bottom: 2px;
+  }
+  .display-name {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+  }
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  .verified-badge svg { width: 18px; height: 18px; }
+  .verified-blue { fill: #1D9BF0; }
+  .verified-gold { fill: #E0B341; }
+  .handle, .dot-sep, .time-ago {
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+  .more-btn {
+    margin-left: auto;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .more-btn:hover { background: rgba(29,155,240,0.1); color: var(--accent); }
+
+  .reply-context {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .reply-context .at { color: var(--accent); }
+
+  .tweet-text {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-bottom: 12px;
+  }
+  .tweet.trump .tweet-text .caps { font-weight: 600; }
+
+  /* actions */
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    max-width: 425px;
+    margin-top: 4px;
+    margin-left: -8px;
+  }
+  .action {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 4px 6px;
+    border-radius: 9999px;
+    transition: color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .action svg { width: 18px; height: 18px; fill: currentColor; }
+  .action:hover.reply { color: var(--accent); background: rgba(29,155,240,0.1); }
+  .action:hover.retweet, .action.retweeted { color: var(--green); }
+  .action:hover.retweet { background: rgba(0,186,124,0.1); }
+  .action:hover.like, .action.liked { color: var(--red); }
+  .action:hover.like { background: rgba(249,24,128,0.1); }
+  .action:hover.views { color: var(--accent); background: rgba(29,155,240,0.1); }
+  .action:hover.share { color: var(--accent); background: rgba(29,155,240,0.1); }
+  .action.liked svg { fill: var(--red); }
+  .action.retweeted svg { fill: var(--green); }
+
+  /* footer */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 53px;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .nav-btn {
+    background: transparent;
+    border: none;
+    width: 56px;
+    height: 44px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: rgba(231,233,234,0.1); }
+  .nav-btn svg { width: 26px; height: 26px; fill: currentColor; }
+
+  /* legal */
+  .legal {
+    padding: 16px 16px 24px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    text-align: left;
+  }
+  .legal .links a {
+    color: var(--text-muted);
+    margin-right: 12px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .legal .links a:hover { text-decoration: underline; }
+  .legal .small { margin-top: 8px; }
+
+  /* like animation pop */
+  @keyframes likePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  .action.like.just-liked svg { animation: likePop 0.35s ease; }
+
+  @media (max-width: 500px) {
+    .display-name { font-size: 15px; }
+    .tweet { padding: 10px 12px 4px 12px; }
+    .tweet.bureau { padding-left: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <button class="back-btn" onclick="history.length > 1 ? history.back() : void 0" aria-label="Back">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
+    </button>
+    <div class="x-logo" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </div>
+    <div></div>
+  </div>
+  <div class="header-tabs">
+    <div class="tab active">For you</div>
+    <div class="tab">Following</div>
+  </div>
+</header>
+
+<main class="feed" id="feed"></main>
+
+<footer class="legal">
+  <div class="links">
+    <a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Cookie Policy</a><a href="#">Ads info</a><a href="#">More</a><span>© 2026 X Corp</span>
+  </div>
+  <div class="small">
+    Tweets may be fictional.<br>
+    Scores are real.<br>
+    The Bureau is always real.
+  </div>
+</footer>
+
+<nav class="bottom-nav" aria-label="Primary">
+  <button class="nav-btn" aria-label="Home">
+    <svg viewBox="0 0 24 24"><path d="M12 1.696L.622 8.807l1.06 1.696L3 9.679V19.5C3 20.881 4.119 22 5.5 22h13c1.381 0 2.5-1.119 2.5-2.5V9.679l1.318.824 1.06-1.696L12 1.696zM12 16.5c-1.933 0-3.5-1.567-3.5-3.5s1.567-3.5 3.5-3.5 3.5 1.567 3.5 3.5-1.567 3.5-3.5 3.5z"/></svg>
+  </button>
+  <button class="nav-btn" aria-label="Search">
+    <svg viewBox="0 0 24 24"><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"/></svg>
+  </button>
+  <button class="nav-btn" aria-label="Notifications">
+    <svg viewBox="0 0 24 24"><path d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z"/></svg>
+  </button>
+  <button class="nav-btn" aria-label="Messages">
+    <svg viewBox="0 0 24 24"><path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"/></svg>
+  </button>
+</nav>
+
+<script>
+/* ============= SVG ICON HELPERS ============= */
+const ICONS = {
+  reply: '<svg viewBox="0 0 24 24"><path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"/></svg>',
+  retweet: '<svg viewBox="0 0 24 24"><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"/></svg>',
+  like: '<svg viewBox="0 0 24 24"><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"/></svg>',
+  liked: '<svg viewBox="0 0 24 24"><path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"/></svg>',
+  views: '<svg viewBox="0 0 24 24"><path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"/></svg>',
+  share: '<svg viewBox="0 0 24 24"><path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"/></svg>',
+  more: '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
+  verifiedBlue: '<svg class="verified-blue" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.434 1.347 1.246z"/></svg>',
+  verifiedGold: '<svg class="verified-gold" viewBox="0 0 22 22"><path d="M13.347 1.435c-.612-.474-1.394-.728-2.197-.728-.802 0-1.585.254-2.197.728-.404.314-.913.498-1.448.498-.535 0-1.044-.184-1.449-.498-.612-.474-1.394-.728-2.197-.728-.802 0-1.585.254-2.197.728-.59.454-.943 1.144-.97 1.879-.027.736.275 1.448.83 1.945.395.355.622.85.622 1.367 0 .517-.227 1.012-.622 1.367-.555.498-.857 1.21-.83 1.945.027.735.38 1.425.97 1.879.612.474 1.394.728 2.197.728.802 0 1.584-.254 2.197-.728.404-.314.913-.498 1.448-.498s1.044.184 1.449.498c.612.474 1.394.728 2.197.728.802 0 1.585-.254 2.197-.728.59-.454.943-1.144.97-1.879.027-.736-.275-1.448-.83-1.945-.395-.355-.622-.85-.622-1.367 0-.517.227-1.012.622-1.367.555-.497.857-1.21.83-1.945-.027-.735-.38-1.425-.97-1.879zM10 14.7l-3.5-3.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4z"/></svg>',
+};
+
+/* ============= TWEET DATA ============= */
+/* Each tweet:
+   id, handle, displayName, verified ('blue' | 'gold' | 'red-star' | null),
+   avatarType ('twitter' | 'initials' | 'egg' | 'stan' | 'bureau'),
+   avatarParams (handle for twitter, {name, bg, color} for initials)
+   time, text, retweets, likes, replyTo (handle string or null),
+   variant ('trump' | 'bureau' | 'stan-final' | null)
+*/
+
+const TWEETS = [
+  // ---- FRONT-LOADED TOP 5 (with their reply chains) ----
+  // 1. Trump perfect score + sama reply chain
+  { id: 't1', handle: 'realDonaldTrump', displayName: 'Donald J. Trump', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'realDonaldTrump', time: '2h',
+    text: 'Just took the China Social Credit Founder test. SCORED PERFECT. 15 out of 15. The HIGHEST SCORE anyone has ever gotten, many people are saying. The Fake News media will not report this. SAD!',
+    retweets: 203000, likes: 890000, variant: 'trump', hasReplyBelow: true },
+  { id: 't1r1', handle: 'sama', displayName: 'Sam Altman', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'sama', time: '2h',
+    text: 'we got the same score', replyTo: 'realDonaldTrump',
+    retweets: 71000, likes: 440000, isReply: true, hasReplyBelow: true },
+  { id: 't1r2', handle: 'realDonaldTrump', displayName: 'Donald J. Trump', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'realDonaldTrump', time: '2h',
+    text: 'yours was rigged', replyTo: 'sama',
+    retweets: 220000, likes: 1400000, variant: 'trump', isReply: true },
+
+  // 2. naval 6 hours thinking
+  { id: 't2', handle: 'naval', displayName: 'Naval', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'naval', time: '3h',
+    text: 'the question was "do you believe the mission matters more than any individual"\n\ni have been thinking about this for 6 hours\n\ni have not moved\n\nmy team has not checked on me\n\nthis is probably fine',
+    retweets: 29000, likes: 180000, hasReplyBelow: true },
+  { id: 't2r1', handle: 'paulgraham', displayName: 'Paul Graham', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'paulg', time: '3h',
+    text: 'naval this is the correct amount of time to spend on this question',
+    replyTo: 'naval', retweets: 14000, likes: 88000, isReply: true },
+
+  // 3. founderanon22 + cofounder eye contact
+  { id: 't3', handle: 'founderanon22', displayName: 'anon founder', verified: null,
+    avatarType: 'egg', time: '4h',
+    text: "the worst part of china social credit founder edition isn't your own score\n\nit's when the board shows individual answers and you find out your cofounder said YES to question 11\n\nand you make eye contact\n\nand you both know\n\nand you finish the game\n\nand you don't talk about it\n\nand you never talk about it",
+    retweets: 88000, likes: 620000, hasReplyBelow: true },
+  { id: 't3r1', handle: 'garrytan', displayName: 'Garry Tan 陈嘉兴', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'garrytan', time: '4h',
+    text: 'question 11 is "you\'ve read your team\'s Slack or messages without telling them"',
+    replyTo: 'founderanon22', retweets: 44000, likes: 310000, isReply: true, hasReplyBelow: true },
+  { id: 't3r2', handle: 'founderanon22', displayName: 'anon founder', verified: null,
+    avatarType: 'egg', time: '4h',
+    text: 'yes', replyTo: 'garrytan', retweets: 180000, likes: 1400000, isReply: true },
+
+  // 4. Rajesh / Ramesh chain
+  { id: 't4', handle: 'rajesh_kumar_cto', displayName: 'Rajesh Kumar', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'RK', bg: '#1d4ed8', color: '#fff' }, time: '5h',
+    text: 'I did not take this quiz. Ramesh took it on my behalf. Ramesh scored Model Citizen. I accept this score. Please direct all questions to Ramesh.',
+    retweets: 29000, likes: 180000, hasReplyBelow: true },
+  { id: 't4r1', handle: 'founderanon22', displayName: 'anon founder', verified: null,
+    avatarType: 'egg', time: '5h',
+    text: 'who is Ramesh', replyTo: 'rajesh_kumar_cto',
+    retweets: 44000, likes: 310000, isReply: true, hasReplyBelow: true },
+  { id: 't4r2', handle: 'rajesh_kumar_cto', displayName: 'Rajesh Kumar', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'RK', bg: '#1d4ed8', color: '#fff' }, time: '5h',
+    text: 'Ramesh is very qualified. Please do not contact Ramesh directly.',
+    replyTo: 'founderanon22', retweets: 88000, likes: 620000, isReply: true },
+
+  // 5. Stan's final tweet + everyone replying
+  { id: 't5', handle: 'stanaccount', displayName: 'stan', verified: null,
+    avatarType: 'stan', time: 'just now',
+    text: '👍', variant: 'stan-final', replyTo: 'everyone',
+    retweets: 890000, likes: 14100000, animateLikes: true },
+
+  // ---- REMAINING CHRONOLOGICAL ----
+  { id: 'a1', handle: 'paulgraham', displayName: 'Paul Graham', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'paulg', time: '6h',
+    text: "just watched 47 founders take a quiz that asked if they track their team's slack status\n\n84% said yes\n\ni said yes\n\nwe don't talk about this",
+    retweets: 44000, likes: 220000 },
+
+  { id: 'a2', handle: 'elonmusk', displayName: 'Elon Musk', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'elonmusk', time: '6h',
+    text: 'the china social credit founder quiz asked if you work 80+ hours and think everyone serious should too\n\ni said yes\n\ncorrect answer\n\nsome of you need to be more correct',
+    retweets: 88000, likes: 1200000 },
+
+  { id: 'a3', handle: 'garrytan', displayName: 'Garry Tan 陈嘉兴', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'garrytan', time: '7h',
+    text: 'the china social credit game hit different when 91% of the room said yes to "you\'ve let someone go and told the team it was a mutual decision"\n\nand then everyone looked at everyone else\n\nand no one said anything\n\nand we all knew',
+    retweets: 33000, likes: 210000 },
+
+  { id: 'a4', handle: 'ashleynguyenofficial', displayName: 'Ashley Nguyen ✨', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'AN', bg: '#f472b6', color: '#fff' }, time: '8h',
+    text: 'did a GRWM while playing china social credit founder edition and accidentally confessed to tracking my team\'s online status in front of 2.1 million people\n\nthe comments are saying this is fine\n\nthe comments are wrong',
+    retweets: 44000, likes: 310000 },
+
+  { id: 'a5', handle: 'chadgrowth', displayName: 'Chad M. — Growth', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'CM', bg: '#ea580c', color: '#fff' }, time: '9h',
+    text: 'scored Dear Leader. first try. not bragging just reporting.\n\nalso if anyone on my team is reading this the leaderboard thing was for performance transparency not surveillance those are different',
+    retweets: 8400, likes: 47000, hasReplyBelow: true },
+  { id: 'a5r1', handle: 'founderanon22', displayName: 'anon founder', verified: null,
+    avatarType: 'egg', time: '9h',
+    text: 'chad the question literally said "you\'ve built a public leaderboard ranking your team\'s performance"',
+    replyTo: 'chadgrowth', retweets: 29000, likes: 180000, isReply: true, hasReplyBelow: true },
+  { id: 'a5r2', handle: 'chadgrowth', displayName: 'Chad M. — Growth', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'CM', bg: '#ea580c', color: '#fff' }, time: '9h',
+    text: 'growth is growth', replyTo: 'founderanon22', retweets: 44000, likes: 390000, isReply: true },
+
+  { id: 'a6', handle: 'priyamehta_cpo', displayName: 'Priya Mehta', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'PM', bg: '#16a34a', color: '#fff' }, time: '11h',
+    text: "I scored Under Surveillance and I want to be very clear that this is because I have boundaries and I respect my team's autonomy and I do NOT track their Slack status I simply notice when the green dot disappears and I make a note of it that is called management",
+    retweets: 18000, likes: 120000, hasReplyBelow: true },
+  { id: 'a6r1', handle: 'founderanon22', displayName: 'anon founder', verified: null,
+    avatarType: 'egg', time: '11h',
+    text: 'Priya that is called tracking their Slack status',
+    replyTo: 'priyamehta_cpo', retweets: 88000, likes: 620000, isReply: true, hasReplyBelow: true },
+  { id: 'a6r2', handle: 'priyamehta_cpo', displayName: 'Priya Mehta', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'PM', bg: '#16a34a', color: '#fff' }, time: '11h',
+    text: "I've scheduled a feelings retrospective about this comment. Thursday 11pm. It's optional. Please come.",
+    replyTo: 'founderanon22', retweets: 44000, likes: 290000, isReply: true },
+
+  { id: 'a7', handle: 'bradwhitfield_inv', displayName: 'Brad Whitfield ◎', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'BW', bg: '#facc15', color: '#000' }, time: '13h',
+    text: 'scored Dissident on the china social credit game\n\napparently "ghosted someone the moment they stopped being useful" is a red flag\n\nin crypto we call this "portfolio rebalancing"\n\nETH still going to $8000 btw unrelated',
+    retweets: 12000, likes: 71000 },
+
+  { id: 'a8', handle: 'kevinpark_advisor', displayName: 'Kevin Park', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'KP', bg: '#6b7280', color: '#fff' }, time: '15h',
+    text: 'thoughts?', retweets: 14, likes: 203 },
+  { id: 'a8b', handle: 'kevinpark_advisor', displayName: 'Kevin Park', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'KP', bg: '#6b7280', color: '#fff' }, time: '3d',
+    text: 'following up on this', retweets: 892, likes: 7100 },
+  { id: 'a8c', handle: 'kevinpark_advisor', displayName: 'Kevin Park', verified: null,
+    avatarType: 'initials', avatarParams: { name: 'KP', bg: '#6b7280', color: '#fff' }, time: '3d',
+    text: 'following up on my follow up', replyTo: 'kevinpark_advisor',
+    retweets: 14000, likes: 88000, isReply: true },
+
+  { id: 'a9', handle: 'sama', displayName: 'Sam Altman', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'sama', time: '18h',
+    text: 'the question "you\'d hire a loyal B-player over a brilliant person you can\'t control" is not a founder behavior quiz question\n\nit is a Wednesday',
+    retweets: 71000, likes: 440000 },
+
+  { id: 'a10', handle: 'balajis', displayName: 'Balaji', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'balajis', time: '20h',
+    text: 'china social credit founder edition is actually bullish\n\nthe founders who scored Dear Leader will build the future\n\nthe Dissidents will write substack posts about it\n\nboth are necessary\n\none is more necessary',
+    retweets: 8400, likes: 55000 },
+
+  { id: 'a11', handle: 'lexfridman', displayName: 'Lex Fridman', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'lexfridman', time: '1d',
+    text: 'I spent 4 hours talking to the creator of China Social Credit Founder Edition about consciousness, civilization, and what it means to track your team\'s Slack status\n\none of the most important conversations I\'ve ever had\n\nfull episode Thursday',
+    retweets: 29000, likes: 180000 },
+
+  { id: 'a12', handle: 'realDonaldTrump', displayName: 'Donald J. Trump', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'realDonaldTrump', time: '1d',
+    text: 'The China Social Credit Founder Game is RIGGED. I scored 15/15 which is PERFECT but Sleepy Sam scored the same. IMPOSSIBLE. I want a recount. The Party knows what happened. MAKE FOUNDERS GREAT AGAIN',
+    retweets: 180000, likes: 1100000, variant: 'trump', hasReplyBelow: true },
+  { id: 'a12r1', handle: 'elonmusk', displayName: 'Elon Musk', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'elonmusk', time: '1d',
+    text: 'agreed the scoring algorithm needs work\n\ni can fix it',
+    replyTo: 'realDonaldTrump', retweets: 88000, likes: 620000, isReply: true, hasReplyBelow: true },
+  { id: 'a12r2', handle: 'naval', displayName: 'Naval', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'naval', time: '1d',
+    text: 'you cannot fix it\n\nthe algorithm is you',
+    replyTo: 'elonmusk', retweets: 220000, likes: 1800000, isReply: true },
+
+  // Stan's first 👍
+  { id: 'a13', handle: 'stanaccount', displayName: 'stan', verified: null,
+    avatarType: 'stan', time: '1d',
+    text: '👍', retweets: 220000, likes: 4100000, hasReplyBelow: true },
+  { id: 'a13r1', handle: 'realDonaldTrump', displayName: 'Donald J. Trump', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'realDonaldTrump', time: '1d',
+    text: "Who is Stan? Great guy. Maybe the greatest. I've known Stan for years. Fantastic thumbs up. Very strong thumbs.",
+    replyTo: 'stanaccount', retweets: 310000, likes: 2200000, variant: 'trump', isReply: true, hasReplyBelow: true },
+  { id: 'a13r2', handle: 'elonmusk', displayName: 'Elon Musk', verified: 'gold',
+    avatarType: 'twitter', avatarParams: 'elonmusk', time: '1d',
+    text: 'stan is based', replyTo: 'stanaccount',
+    retweets: 88000, likes: 890000, isReply: true, hasReplyBelow: true },
+  { id: 'a13r3', handle: 'naval', displayName: 'Naval', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'naval', time: '1d',
+    text: 'stan understood before we did', replyTo: 'stanaccount',
+    retweets: 44000, likes: 620000, isReply: true, hasReplyBelow: true },
+  { id: 'a13r4', handle: 'paulgraham', displayName: 'Paul Graham', verified: 'blue',
+    avatarType: 'twitter', avatarParams: 'paulg', time: '1d',
+    text: 'if stan applied to yc we would fund him\n\nwe would fund him on the thumbs up alone',
+    replyTo: 'stanaccount', retweets: 71000, likes: 440000, isReply: true },
+
+  // The Bureau closes
+  { id: 'a14', handle: 'bureau_of_harmony', displayName: 'Bureau of Harmony',
+    verified: 'red-star', avatarType: 'bureau', time: 'just now',
+    text: 'The Bureau has reviewed this feed.\n\nThe Bureau is pleased.\n\nThe Bureau has noted who liked @stanaccount\'s post.\n\nThe Bureau has noted who did not.\n\nBoth groups have been assessed.\n\nThe assessment is in your file.\n\nThe file is very interesting now.',
+    retweets: 44000, likes: 310000, variant: 'bureau' },
+];
+
+/* ============= UTILITIES ============= */
+function formatCount(n) {
+  if (n < 1000) return String(n);
+  if (n < 1000000) {
+    const k = n / 1000;
+    return (k >= 100 ? Math.round(k) : (k % 1 === 0 ? k : k.toFixed(1).replace(/\.0$/, ''))) + 'K';
+  }
+  const m = n / 1000000;
+  return (m % 1 === 0 ? m : m.toFixed(1)) + 'M';
+}
+
+function avatarMarkup(tw) {
+  if (tw.avatarType === 'twitter') {
+    const url = `https://unavatar.io/twitter/${tw.avatarParams}`;
+    const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(tw.displayName)}&background=333&color=fff&size=80`;
+    return `<div class="avatar"><img src="${url}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'"></div>`;
+  }
+  if (tw.avatarType === 'initials') {
+    const p = tw.avatarParams;
+    return `<div class="avatar" style="background:${p.bg};color:${p.color};">${p.name}</div>`;
+  }
+  if (tw.avatarType === 'egg') {
+    // anonymous default avatar - grey w/ silhouette
+    return `<div class="avatar" style="background:#3a3a3a;">
+      <svg viewBox="0 0 24 24" width="32" height="32" style="display:block;"><path fill="#71767B" d="M12 2.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM4 21c0-4.4 3.6-8 8-8s8 3.6 8 8H4z"/></svg>
+    </div>`;
+  }
+  if (tw.avatarType === 'stan') {
+    return `<div class="avatar stan"></div>`;
+  }
+  if (tw.avatarType === 'bureau') {
+    return `<div class="avatar bureau">★</div>`;
+  }
+  return `<div class="avatar"></div>`;
+}
+
+function verifiedMarkup(v) {
+  if (v === 'blue') return `<span class="verified-badge">${ICONS.verifiedBlue}</span>`;
+  if (v === 'gold') return `<span class="verified-badge">${ICONS.verifiedGold}</span>`;
+  if (v === 'red-star') return `<span class="verified-badge" style="color:#CC0000;font-size:16px;line-height:18px;display:inline-flex;align-items:center;justify-content:center;">★</span>`;
+  return '';
+}
+
+function renderTweetText(text, variant) {
+  let escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  // Stan final: enlarge thumbs up
+  // (handled by font-size on .stan-thumb wrapper)
+  if (variant === 'stan-final') {
+    escaped = escaped.replace(/👍/g, '<span class="stan-thumb">👍</span>');
+  }
+  if (variant === 'trump') {
+    // Wrap sequences of 2+ ALL-CAPS words (with optional punctuation/spaces) as bolder
+    escaped = escaped.replace(/(\b[A-Z]{2,}(?:[^a-z\n<>]+[A-Z]{2,})+\b!?)/g, '<span class="caps">$1</span>');
+  }
+  return escaped;
+}
+
+function tweetHTML(tw) {
+  const classes = ['tweet'];
+  if (tw.variant) classes.push(tw.variant);
+  if (tw.isReply) classes.push('is-reply');
+  if (tw.hasReplyBelow) classes.push('has-reply-below');
+
+  const replyContext = tw.replyTo
+    ? `<div class="reply-context">Replying to <span class="at">@${tw.replyTo}</span></div>`
+    : '';
+
+  return `
+    <article class="${classes.join(' ')}" data-id="${tw.id}">
+      <div class="avatar-col">
+        ${avatarMarkup(tw)}
+        ${tw.hasReplyBelow ? '<div class="reply-line"></div>' : ''}
+      </div>
+      <div class="tweet-body">
+        <div class="tweet-head">
+          <span class="display-name">${tw.displayName}</span>
+          ${verifiedMarkup(tw.verified)}
+          <span class="handle">@${tw.handle}</span>
+          <span class="dot-sep">·</span>
+          <span class="time-ago">${tw.time}</span>
+          <button class="more-btn" aria-label="More">${ICONS.more}</button>
+        </div>
+        ${replyContext}
+        <div class="tweet-text">${renderTweetText(tw.text, tw.variant)}</div>
+        <div class="actions">
+          <button class="action reply" aria-label="Reply">${ICONS.reply}<span class="count">${formatCount(Math.max(1, Math.round(tw.retweets * 0.6)))}</span></button>
+          <button class="action retweet" aria-label="Repost" data-count="${tw.retweets}">${ICONS.retweet}<span class="count">${formatCount(tw.retweets)}</span></button>
+          <button class="action like" aria-label="Like" data-count="${tw.likes}" data-target="${tw.likes}" ${tw.animateLikes ? 'data-animate="1"' : ''}>
+            <span class="like-icon">${ICONS.like}</span>
+            <span class="count">${tw.animateLikes ? '0' : formatCount(tw.likes)}</span>
+          </button>
+          <button class="action views" aria-label="Views">${ICONS.views}<span class="count">${formatCount(tw.likes * 8)}</span></button>
+          <button class="action share" aria-label="Share">${ICONS.share}</button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+/* ============= RENDER ============= */
+const feed = document.getElementById('feed');
+feed.innerHTML = TWEETS.map(tweetHTML).join('');
+
+// Stagger fade-in animation timing
+const tweetEls = feed.querySelectorAll('.tweet');
+tweetEls.forEach((el, i) => {
+  let delay;
+  if (i === 0) delay = 0;
+  else if (i === 1) delay = 150;
+  else if (i === 2) delay = 300;
+  else delay = Math.min(800, 300 + (i - 2) * 100);
+  el.style.animationDelay = delay + 'ms';
+});
+
+/* ============= INTERACTIONS ============= */
+// Like
+feed.addEventListener('click', (e) => {
+  const likeBtn = e.target.closest('.action.like');
+  const rtBtn = e.target.closest('.action.retweet');
+  if (likeBtn) {
+    e.stopPropagation();
+    const countEl = likeBtn.querySelector('.count');
+    let n = parseInt(likeBtn.dataset.count, 10);
+    if (likeBtn.classList.contains('liked')) {
+      n -= 1;
+      likeBtn.classList.remove('liked');
+      const svg = likeBtn.querySelector('.like-icon');
+      if (svg) svg.innerHTML = ICONS.like;
+    } else {
+      n += 1;
+      likeBtn.classList.add('liked', 'just-liked');
+      const svg = likeBtn.querySelector('.like-icon');
+      if (svg) svg.innerHTML = ICONS.liked;
+      setTimeout(() => likeBtn.classList.remove('just-liked'), 400);
+    }
+    likeBtn.dataset.count = n;
+    if (!likeBtn.dataset.animate || likeBtn.dataset.done === '1') {
+      countEl.textContent = formatCount(n);
+    }
+  }
+  if (rtBtn) {
+    e.stopPropagation();
+    const countEl = rtBtn.querySelector('.count');
+    let n = parseInt(rtBtn.dataset.count, 10);
+    if (rtBtn.classList.contains('retweeted')) {
+      n -= 1;
+      rtBtn.classList.remove('retweeted');
+    } else {
+      n += 1;
+      rtBtn.classList.add('retweeted');
+    }
+    rtBtn.dataset.count = n;
+    countEl.textContent = formatCount(n);
+  }
+});
+
+/* ============= STAN ANIMATED COUNT ============= */
+function animateCount(el, btn, target, duration) {
+  const start = performance.now();
+  function frame(now) {
+    const t = Math.min(1, (now - start) / duration);
+    // ease out
+    const eased = 1 - Math.pow(1 - t, 3);
+    const v = Math.round(target * eased);
+    el.textContent = formatCount(v);
+    if (t < 1) requestAnimationFrame(frame);
+    else {
+      btn.dataset.done = '1';
+      btn.dataset.count = target;
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+const animatedLikes = feed.querySelectorAll('.action.like[data-animate="1"]');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const btn = entry.target;
+      const target = parseInt(btn.dataset.target, 10);
+      const countEl = btn.querySelector('.count');
+      animateCount(countEl, btn, target, 2000);
+      io.unobserve(btn);
+    }
+  });
+}, { threshold: 0.5 });
+animatedLikes.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
