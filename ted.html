@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How a 15-Question Quiz Could Save Modern Capitalism | Kovid Bhaduri | TED</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 60%22><rect width=%22100%22 height=%2260%22 fill=%22%23EB0028%22/><text x=%2250%22 y=%2244%22 font-family=%22Arial Black%22 font-weight=%22900%22 font-size=%2236%22 text-anchor=%22middle%22 fill=%22white%22>TED</text></svg>" />
+<style>
+  :root {
+    --ted-red: #EB0028;
+    --ted-red-hover: #C20021;
+    --ink: #0A0A0A;
+    --ink-2: #1B1B1B;
+    --grey-1: #6B6B6B;
+    --grey-2: #A8A8A8;
+    --grey-3: #E5E5E5;
+    --grey-4: #F4F4F4;
+    --line: #DDDDDD;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #FFFFFF;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--ted-red); }
+  img { display: block; max-width: 100%; }
+
+  /* ============= TOP HEADER ============= */
+  .top-bar {
+    background: #000;
+    color: #fff;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #1f1f1f;
+  }
+  .ted-logo {
+    background: var(--ted-red);
+    color: #fff;
+    font-family: "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: -0.5px;
+    padding: 6px 8px 4px 8px;
+    line-height: 1;
+    margin-right: 28px;
+    display: inline-block;
+  }
+  .ted-logo:hover { color: #fff; }
+  .top-nav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    list-style: none;
+    flex: 1;
+  }
+  .top-nav a {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 22px 0;
+  }
+  .top-nav a:hover { color: var(--ted-red); }
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .icon-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+  }
+  .icon-btn:hover { color: var(--ted-red); }
+  .icon-btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .sign-in {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid #fff;
+    border-radius: 2px;
+  }
+  .sign-in:hover { background: #fff; color: #000; }
+
+  /* ============= BREADCRUMB ============= */
+  .breadcrumb {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 24px 0;
+    font-size: 12px;
+    color: var(--grey-1);
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+  .breadcrumb a { color: var(--grey-1); }
+  .breadcrumb a:hover { color: var(--ted-red); }
+  .breadcrumb .sep { margin: 0 6px; }
+
+  /* ============= TALK HEADER ============= */
+  .talk-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 24px 24px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 48px;
+    align-items: end;
+  }
+  .speaker-name {
+    font-size: 16px;
+    color: var(--ted-red);
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+  .speaker-name a { color: var(--ted-red); }
+  .talk-title {
+    font-size: 42px;
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .talk-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--grey-1);
+    flex-wrap: wrap;
+  }
+  .talk-meta .dot { color: var(--grey-2); }
+  .talk-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .action-btn {
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .action-btn:hover { background: var(--ink); color: #fff; }
+  .action-btn svg { width: 12px; height: 12px; fill: currentColor; }
+  .action-btn.primary { background: var(--ted-red); border-color: var(--ted-red); color: #fff; }
+  .action-btn.primary:hover { background: var(--ted-red-hover); border-color: var(--ted-red-hover); }
+
+  /* ============= VIDEO PLAYER ============= */
+  .player-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .player-bg {
+    position: absolute;
+    inset: 0;
+    background: #000 center/cover no-repeat url('hero.png');
+  }
+  .player-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.55) 100%);
+  }
+  .ted-watermark {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    background: var(--ted-red);
+    color: #fff;
+    font-family: "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    padding: 3px 6px 2px;
+    line-height: 1;
+    letter-spacing: -0.3px;
+  }
+  .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px;
+    height: 84px;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .player:hover .play-button { background: var(--ted-red); border-color: var(--ted-red); transform: translate(-50%, -50%) scale(1.05); }
+  .play-button::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 22px solid #fff;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    margin-left: 6px;
+  }
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+  }
+  .progress-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    background: var(--ted-red);
+  }
+
+  /* ============= TABS ============= */
+  .tabs {
+    max-width: 1200px;
+    margin: 24px auto 0;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 28px;
+  }
+  .tab {
+    background: transparent;
+    border: none;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--grey-1);
+    padding: 14px 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tab.active { color: var(--ink); border-bottom-color: var(--ted-red); }
+  .tab:hover { color: var(--ink); }
+
+  /* ============= BODY GRID ============= */
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 48px;
+  }
+  .article h2 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin: 32px 0 14px;
+  }
+  .article p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    margin-bottom: 18px;
+  }
+  .lede {
+    font-size: 19px !important;
+    line-height: 1.55 !important;
+    color: var(--ink) !important;
+  }
+  .pullquote {
+    border-left: 4px solid var(--ted-red);
+    padding: 12px 0 12px 24px;
+    margin: 32px 0;
+    font-size: 26px;
+    line-height: 1.35;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--grey-1);
+    font-style: normal;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .article ol, .article ul {
+    margin: 12px 0 24px 24px;
+    color: var(--ink-2);
+  }
+  .article li {
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .takeaway-box {
+    background: var(--grey-4);
+    padding: 24px 28px;
+    margin: 32px 0;
+    border-radius: 2px;
+  }
+  .takeaway-box .label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: var(--ted-red);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .takeaway-box h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.2px;
+  }
+  .takeaway-box p {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  /* ============= SIDEBAR ============= */
+  .sidebar > * + * { margin-top: 36px; }
+  .side-block .side-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--ted-red);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .speaker-card {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .speaker-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6b4f3c, #3d2a1f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: 0.5px;
+  }
+  .speaker-card .name {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .speaker-card .role {
+    font-size: 13px;
+    color: var(--grey-1);
+    line-height: 1.45;
+  }
+  .speaker-bio {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  .more-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ted-red);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+  .more-link:hover { color: var(--ted-red-hover); }
+  .reading-list { list-style: none; padding: 0; margin: 0; }
+  .reading-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .reading-list li:last-child { border-bottom: none; }
+  .reading-list .title { font-weight: 700; color: var(--ink); display: block; }
+  .reading-list .author { color: var(--grey-1); font-size: 13px; }
+
+  /* ============= RELATED TALKS ============= */
+  .related {
+    background: var(--grey-4);
+    padding: 56px 0;
+  }
+  .related-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .related h2 {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+    margin-bottom: 28px;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .related-card {
+    background: #fff;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .related-card:hover { transform: translateY(-2px); }
+  .related-thumb {
+    aspect-ratio: 16 / 9;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+  }
+  .related-thumb .ted-mini {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--ted-red);
+    color: #fff;
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 4px;
+    line-height: 1;
+  }
+  .related-thumb .dur {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 2px;
+  }
+  .thumb-1 { background: linear-gradient(135deg, #2b1e0f, #0a0604); }
+  .thumb-2 { background: linear-gradient(135deg, #0d1a2b, #050a14); }
+  .thumb-3 { background: linear-gradient(135deg, #2b0d18, #140509); }
+  .related-meta { padding: 14px 16px 18px; }
+  .related-meta .author {
+    font-size: 12px;
+    color: var(--ted-red);
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .related-meta .title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+  }
+
+  /* ============= FOOTER ============= */
+  footer {
+    background: #000;
+    color: #aaa;
+    padding: 48px 0 24px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 200px repeat(4, 1fr);
+    gap: 32px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid #1f1f1f;
+  }
+  .footer-top .col h4 {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .footer-top .col a {
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .footer-top .col a:hover { color: #fff; }
+  .footer-bottom {
+    margin-top: 28px;
+    font-size: 12px;
+    color: #777;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-bottom a { color: #777; margin-right: 16px; }
+  .footer-bottom a:hover { color: #fff; }
+
+  /* ============= RESPONSIVE ============= */
+  @media (max-width: 960px) {
+    .talk-header, .content { grid-template-columns: 1fr; }
+    .talk-actions { justify-content: flex-start; }
+    .related-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .talk-title { font-size: 32px; }
+    .top-nav { display: none; }
+  }
+  @media (max-width: 560px) {
+    .talk-title { font-size: 26px; }
+    .pullquote { font-size: 20px; padding-left: 18px; }
+    .footer-top { grid-template-columns: 1fr; }
+    .top-bar { padding: 0 16px; }
+    .breadcrumb, .player-wrap, .tabs, .content, .footer-inner, .related-inner { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a href="#" class="ted-logo">TED</a>
+  <ul class="top-nav">
+    <li><a href="#">Watch</a></li>
+    <li><a href="#">Discover</a></li>
+    <li><a href="#">Attend</a></li>
+    <li><a href="#">Participate</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="top-right">
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3a6.5 6.5 0 1 0-.7.7l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
+    </button>
+    <a href="#" class="sign-in">Sign in</a>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="#">Talks</a><span class="sep">/</span><a href="#">Leadership</a><span class="sep">/</span><span>How a 15-Question Quiz Could Save Modern Capitalism</span>
+</nav>
+
+<section class="talk-header">
+  <div>
+    <div class="speaker-name"><a href="#">Kovid Bhaduri</a></div>
+    <h1 class="talk-title">How a 15-Question Quiz Could Save Modern Capitalism</h1>
+    <div class="talk-meta">
+      <span>Posted Apr 2026</span>
+      <span class="dot">·</span>
+      <span>14:32</span>
+      <span class="dot">·</span>
+      <span>TEDxPaloAlto</span>
+      <span class="dot">·</span>
+      <span>4,127,829 views</span>
+    </div>
+  </div>
+  <div class="talk-actions">
+    <button class="action-btn primary">
+      <svg viewBox="0 0 24 24"><path d="M5 3v18l16-9z"/></svg>
+      Watch
+    </button>
+    <button class="action-btn">
+      <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+      Share
+    </button>
+    <button class="action-btn">
+      <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+      Save
+    </button>
+  </div>
+</section>
+
+<div class="player-wrap">
+  <div class="player" id="player">
+    <div class="player-bg"></div>
+    <span class="ted-watermark">TED</span>
+    <div class="play-button" aria-label="Play"></div>
+    <div class="progress-bar"></div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button class="tab active">Talk details</button>
+  <button class="tab">Transcript</button>
+  <button class="tab">Comments (12,847)</button>
+  <button class="tab">Read more</button>
+</nav>
+
+<section class="content">
+  <article class="article">
+    <h2>About this talk</h2>
+    <p class="lede">In 2026, a 15-question online quiz called "China Social Credit: Founder Edition" was downloaded 47 million times in its first three weeks. Most people called it satire. Kovid Bhaduri thinks it might be the most important diagnostic instrument of our time.</p>
+    <p>In this stunning, deeply researched talk, Bhaduri argues that the quiz — which scores founders on a spectrum from "Dissident" to "Dear Leader" — has accidentally exposed a crisis of authority hiding in plain sight at the heart of modern technology companies. Drawing on three years of fieldwork inside 86 venture-backed startups, original survey data from 2,400 founders, and a personal story you have to hear to believe, Bhaduri asks the question we have all been too uncomfortable to ask:</p>
+    <p><em>What if the joke is on us?</em></p>
+
+    <div class="pullquote">
+      "When I first scored my own quiz, I scored 'Dear Leader.' Of course I did. I had been planning to write a book called <em>Servant Leadership in the Age of Asymmetry</em>. And in that moment — sitting alone in my apartment, holding a printout of my own result — I understood that I had spent ten years writing about the disease while being the disease."
+      <cite>— Kovid Bhaduri, 06:42</cite>
+    </div>
+
+    <h2>The four findings that changed everything</h2>
+    <p>Over the course of fourteen minutes, Bhaduri walks the audience through the four most uncomfortable findings of his research — each of which, he argues, should have been a national news story but instead became a meme.</p>
+    <ol>
+      <li><strong>91% of founders</strong> who took the quiz admitted, in writing, to behaviors that their HR policies would categorize as misconduct.</li>
+      <li><strong>None of them</strong> updated the policy.</li>
+      <li><strong>67% scored higher than they expected.</strong> The remaining 33% scored higher than they were willing to disclose.</li>
+      <li>The single most predictive question for venture outcomes was not strategy, market, or capital. It was Question 11.</li>
+    </ol>
+    <p>Bhaduri does not tell you what Question 11 is. He asks you to take the quiz and find out for yourself. He suggests, gently but firmly, that you not take it in front of your cofounder.</p>
+
+    <div class="takeaway-box">
+      <div class="label">The big idea</div>
+      <h3>The quiz isn't a joke about founders. It's a mirror founders refuse to hold up.</h3>
+      <p>The cultural impulse to laugh at the quiz — Bhaduri argues — is itself one of the symptoms the quiz is trying to surface. We laugh because we recognize. We share because we are confessing. The thumbs up emoji is not absurd. It is honest.</p>
+    </div>
+
+    <h2>Why this talk matters now</h2>
+    <p>We are living, Bhaduri contends, through the largest accidental ethnographic study of founder behavior in history — and the data is being collected through a quiz designed in a weekend by someone who, by his own account, "thought it would be funny."</p>
+    <p>The talk closes with three discussion questions that Bhaduri asks every founder in his executive coaching practice. He encourages every viewer to sit with them, alone, for at least one hour before discussing them with another human being:</p>
+    <ul>
+      <li>When was the last time you read a team member's Slack messages without telling them? What did you learn — about them, and about yourself?</li>
+      <li>Is performance transparency the same as surveillance? Where, exactly, is the line — and who put it there?</li>
+      <li>If you scored "Dear Leader," what is one boundary you can give back this week?</li>
+    </ul>
+
+    <h2>A note from the speaker</h2>
+    <p>"I want to be very clear about something," Bhaduri says in the final ninety seconds of the talk. "I am not saying the quiz is right. I am saying that 47 million people sat down, alone, and answered fifteen questions honestly. That is the largest act of collective founder confession in recorded history. We should at least read what they said."</p>
+    <p>Then he steps back, the lights dim, and he leaves a single image on the screen behind him: a thumbs up emoji.</p>
+    <p>The audience is silent for eleven seconds. Then they stand.</p>
+  </article>
+
+  <aside class="sidebar">
+    <div class="side-block">
+      <div class="side-label">About the speaker</div>
+      <div class="speaker-card">
+        <div class="speaker-avatar">KB</div>
+        <div>
+          <div class="name">Kovid Bhaduri</div>
+          <div class="role">Organizational psychologist · Founder Ethics Researcher</div>
+        </div>
+      </div>
+      <div class="speaker-bio">
+        Kovid Bhaduri is the founding director of the Center for Founder Ethics at Stanford and the author of three books on power asymmetry in early-stage companies. His TED Talk has been viewed in 142 countries and translated into 38 languages. He lives in Palo Alto with his wife, two children, and a Slack workspace he has promised — in writing — never to look at on weekends.
+      </div>
+      <a href="#" class="more-link">More about Kovid →</a>
+    </div>
+
+    <div class="side-block">
+      <div class="side-label">Recommended reading</div>
+      <ul class="reading-list">
+        <li>
+          <span class="title">The Power Paradox</span>
+          <span class="author">Dacher Keltner · 2016</span>
+        </li>
+        <li>
+          <span class="title">Servant Leadership</span>
+          <span class="author">Robert K. Greenleaf · 1977</span>
+        </li>
+        <li>
+          <span class="title">China Social Credit: Founder Edition</span>
+          <span class="author">The Bureau of Harmony · 2026</span>
+        </li>
+        <li>
+          <span class="title">High Output Management</span>
+          <span class="author">Andrew S. Grove · 1983</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="side-block">
+      <div class="side-label">Take action</div>
+      <div class="speaker-bio">
+        Take the quiz Bhaduri references in this talk. Sit with your score for at least one hour before sharing it. Then have the conversation you have been avoiding.
+      </div>
+      <a href="/" class="more-link">Take the quiz →</a>
+    </div>
+  </aside>
+</section>
+
+<section class="related">
+  <div class="related-inner">
+    <h2>More talks like this</h2>
+    <div class="related-grid">
+      <article class="related-card">
+        <div class="related-thumb thumb-1">
+          <span class="ted-mini">TED</span>
+          <span class="dur">11:48</span>
+        </div>
+        <div class="related-meta">
+          <div class="author">Priya Mehta</div>
+          <div class="title">The Hidden Cost of Slack Status Anxiety</div>
+        </div>
+      </article>
+      <article class="related-card">
+        <div class="related-thumb thumb-2">
+          <span class="ted-mini">TED</span>
+          <span class="dur">17:02</span>
+        </div>
+        <div class="related-meta">
+          <div class="author">Chad Marshall</div>
+          <div class="title">Why I Built a Leaderboard for My Team (And Why You Should Too)</div>
+        </div>
+      </article>
+      <article class="related-card">
+        <div class="related-thumb thumb-3">
+          <span class="ted-mini">TED</span>
+          <span class="dur">06:01</span>
+        </div>
+        <div class="related-meta">
+          <div class="author">Naval Ravikant</div>
+          <div class="title">Six Hours, One Question: A Meditation on the Mission</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="col">
+        <a href="#" class="ted-logo">TED</a>
+        <p style="font-size:12px;color:#777;margin-top:16px;line-height:1.5;">Ideas change everything.</p>
+      </div>
+      <div class="col">
+        <h4>Discover</h4>
+        <a href="#">Talks</a>
+        <a href="#">Playlists</a>
+        <a href="#">TED Series</a>
+        <a href="#">Podcasts</a>
+        <a href="#">TED-Ed</a>
+      </div>
+      <div class="col">
+        <h4>Attend</h4>
+        <a href="#">Conferences</a>
+        <a href="#">TEDx events</a>
+        <a href="#">TED on tour</a>
+      </div>
+      <div class="col">
+        <h4>Participate</h4>
+        <a href="#">Nominate</a>
+        <a href="#">Translate</a>
+        <a href="#">Join the audience</a>
+        <a href="#">Organize a local TEDx</a>
+      </div>
+      <div class="col">
+        <h4>About</h4>
+        <a href="#">Our work</a>
+        <a href="#">Our team</a>
+        <a href="#">Press</a>
+        <a href="#">Contact</a>
+        <a href="#">Help</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>
+        <a href="#">© TED Conferences, LLC. All rights reserved.</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+      <div style="color:#555;">Talks may be fictional. Findings are real. The Bureau is always real.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Tabs are visual only
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+  // Player click: brief flash of the red bar to feel alive
+  const player = document.getElementById('player');
+  const bar = player.querySelector('.progress-bar');
+  player.addEventListener('click', () => {
+    bar.style.setProperty('--p', '0%');
+    const innerBar = document.createElement('div');
+    innerBar.style.cssText = 'position:absolute;left:0;top:0;bottom:0;width:0%;background:#EB0028;transition:width 0.6s linear;';
+    bar.innerHTML = '';
+    bar.appendChild(innerBar);
+    requestAnimationFrame(() => { innerBar.style.width = '8%'; });
+  });
+</script>
+</body>
+</html>
